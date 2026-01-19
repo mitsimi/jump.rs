@@ -1,0 +1,23 @@
+# Build outputs
+target/
+Cargo.lock
+
+# Frontend
+static/dist/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Local data
+devices.json
+
+# Logs
+*.log
