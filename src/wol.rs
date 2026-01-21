@@ -5,7 +5,7 @@ use std::net::{Ipv4Addr, SocketAddr, UdpSocket};
 pub fn send_wol_packet(device: &Device) -> Result<(), AppError> {
     let mac = parse_mac_address(&device.mac_address).map_err(AppError::InvalidMac)?;
 
-    let magic_packet = create_magic_packet(&mac);
+    let magic_packet = create_magic_packet(mac);
 
     let socket = UdpSocket::bind("0.0.0.0:0").map_err(AppError::Network)?;
 
@@ -44,13 +44,13 @@ fn parse_mac_address(mac_str: &str) -> Result<[u8; 6], String> {
     Ok(mac)
 }
 
-fn create_magic_packet(mac: &[u8; 6]) -> Vec<u8> {
+fn create_magic_packet(mac: [u8; 6]) -> Vec<u8> {
     let mut packet = Vec::with_capacity(102);
 
     packet.extend(std::iter::repeat_n(0xFF, 6));
 
     for _ in 0..16 {
-        packet.extend_from_slice(mac);
+        packet.extend_from_slice(&mac);
     }
 
     packet
