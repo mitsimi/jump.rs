@@ -1,13 +1,10 @@
+mod api;
 mod arp;
 mod error;
-mod handlers;
 mod models;
 mod storage;
 mod wol;
 
-use crate::handlers::{
-    arp_lookup, create_device, delete_device, get_devices, update_device, wake_device,
-};
 use crate::storage::{SharedStorage, load_storage};
 use axum::{
     Router,
@@ -30,12 +27,12 @@ async fn main() {
 
     let app = Router::new()
         .fallback_service(ServeDir::new("static/dist"))
-        .route("/api/devices", get(get_devices))
-        .route("/api/devices", post(create_device))
-        .route("/api/devices/{id}", put(update_device))
-        .route("/api/devices/{id}", delete(delete_device))
-        .route("/api/devices/{id}/wake", post(wake_device))
-        .route("/api/arp-lookup", post(arp_lookup))
+        .route("/api/devices", get(api::get_devices))
+        .route("/api/devices", post(api::create_device))
+        .route("/api/devices/{id}", put(api::update_device))
+        .route("/api/devices/{id}", delete(api::delete_device))
+        .route("/api/devices/{id}/wake", post(api::wake_device))
+        .route("/api/arp-lookup", post(api::arp_lookup))
         .with_state(storage)
         .layer(cors);
 
