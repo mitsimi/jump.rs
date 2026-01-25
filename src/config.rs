@@ -14,6 +14,7 @@ pub struct AppConfig {
     pub server: ServerConfig,
     pub storage: StorageConfig,
     pub wol: WolConfig,
+    #[cfg(feature = "otlp")]
     pub otel: OtelConfig,
 }
 
@@ -66,6 +67,7 @@ pub struct WolConfig {
     pub default_port: u16,
 }
 
+#[cfg(feature = "otlp")]
 #[derive(Debug, Deserialize)]
 pub struct OtelConfig {
     /// OTLP endpoint URL (e.g., "http://localhost:4317"). If empty, OTEL is disabled.
@@ -98,6 +100,7 @@ impl Default for WolConfig {
     }
 }
 
+#[cfg(feature = "otlp")]
 impl Default for OtelConfig {
     fn default() -> Self {
         Self {
@@ -123,13 +126,19 @@ pub fn get() -> &'static AppConfig {
 fn load() -> Result<AppConfig, ConfigError> {
     let config_path = env::var(CONFIG_PATH_ENV).unwrap_or_else(|_| DEFAULT_CONFIG_FILE.to_string());
 
-    let config = Config::builder()
+    let builder = Config::builder()
         .set_default("server.port", 3000)?
         .set_default("server.log_level", "info")?
         .set_default("server.log_format", "compact")?
         .set_default("storage.file_path", "devices.json")?
-        .set_default("wol.default_port", 9)?
-        .set_default("otel.service_name", "jump_rs")?
+        .set_default("wol.default_port", 9)?;
+
+    #[cfg(feature = "otlp")]
+    {
+        builder.set_default("otel.service_name", "jump_rs")?;
+    }
+
+    let config = builder
         .add_source(File::with_name(&config_path).required(false))
         .add_source(
             Environment::with_prefix(ENV_PREFIX)
