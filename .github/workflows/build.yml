@@ -96,7 +96,7 @@ jobs:
           push: ${{ github.event_name == 'push' || inputs.test_mode == false }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=${{ github.event_name == 'push' || inputs.test_mode == false }}
+          outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push=${{ github.event_name == 'push' || inputs.test_mode == false }}
           cache-from: type=gha,scope=amd64
           cache-to: type=gha,mode=max,scope=amd64
 
@@ -146,7 +146,7 @@ jobs:
           push: ${{ github.event_name == 'push' || inputs.test_mode == false }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push-by-digest=true,name-canonical=true,push=${{ github.event_name == 'push' || inputs.test_mode == false }}
+          outputs: type=image,name=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }},push=${{ github.event_name == 'push' || inputs.test_mode == false }}
           cache-from: type=gha,scope=arm64
           cache-to: type=gha,mode=max,scope=arm64
 
