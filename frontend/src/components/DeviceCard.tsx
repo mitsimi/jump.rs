@@ -2,6 +2,7 @@ import styles from "./DeviceCard.module.css";
 import { useWakeDevice } from "../hooks/useWakeDevice";
 import { useDeleteDevice } from "../hooks/useDeleteDevice";
 import type { Device } from "../types/device";
+import { useToast } from "../hooks/useToast";
 
 interface DeviceCardProps {
   device: Device;
@@ -13,9 +14,17 @@ interface DeviceCardProps {
 export function DeviceCard({ device, onEdit }: DeviceCardProps) {
   const wakeDevice = useWakeDevice();
   const deleteDevice = useDeleteDevice();
+  const { showToast } = useToast();
 
   const handleWake = () => {
-    wakeDevice.mutate(device.id);
+    wakeDevice.mutate(device.id, {
+      onSuccess: () => {
+        showToast("Wake signal sent", "success");
+      },
+      onError: () => {
+        showToast("Failed to send wake signal", "error");
+      },
+    });
   };
 
   const handleDelete = () => {
