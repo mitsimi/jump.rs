@@ -29,8 +29,11 @@ impl DeviceStorage {
         }
 
         let content = fs::read_to_string(path).map_err(AppError::StorageIo)?;
-        let devices: Vec<Device> =
-            serde_json::from_str(&content).map_err(AppError::StorageParse)?;
+        let devices: Vec<Device> = if content.trim().is_empty() {
+            Vec::new()
+        } else {
+            serde_json::from_str(&content).map_err(AppError::StorageParse)?
+        };
 
         info!(device_count = devices.len(), "Storage loaded");
         Ok(Self {
