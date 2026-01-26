@@ -1,6 +1,6 @@
 services:
   app:
-    build: .
+    image: ghcr.io/mitsimi/jump_rs:latest
     network_mode: host
     cap_add:
       - NET_RAW
@@ -12,15 +12,15 @@ services:
     environment:
       # Server configuration
       - JUMPERS_SERVER_PORT=3000
-      # - JUMPERS_SERVER_LOG_LEVEL=info  # trace, debug, info, warn, error
-      # - JUMPERS_SERVER_LOG_FORMAT=compact  # compact, json, or pretty
-      # Storage configuration
-      # - JUMPERS_STORAGE_FILE_PATH=/app/devices.json
-      # Wake-on-LAN configuration
-      # - JUMPERS_WOL_DEFAULT_PORT=9
-      # OpenTelemetry (requires "otlp" feature)
-      # - JUMPERS_OTEL_ENDPOINT=http://localhost:4317
-      # - JUMPERS_OTEL_SERVICE_NAME=jump_rs
-      # Custom config file path (optional)
-      # - JUMPERS_CONFIG=/app/config.toml
+    # - JUMPERS_SERVER_LOG_LEVEL=info  # trace, debug, info, warn, error
+    # - JUMPERS_SERVER_LOG_FORMAT=compact  # compact, json, or pretty
+    # Storage configuration
+    # - JUMPERS_STORAGE_FILE_PATH=/app/devices.json
+    # Wake-on-LAN configuration
+    # - JUMPERS_WOL_DEFAULT_PORT=9
+    # OpenTelemetry (requires "otlp" feature)
+    # - JUMPERS_OTEL_ENDPOINT=http://localhost:4317
+    # - JUMPERS_OTEL_SERVICE_NAME=jump_rs
+    # Custom config file path (optional)
+    # - JUMPERS_CONFIG=/app/config.toml
     restart: unless-stopped
