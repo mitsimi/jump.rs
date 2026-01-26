@@ -19,7 +19,7 @@ RUN mkdir src && touch src/lib.rs src/main.rs && cargo fetch
 
 COPY src/ ./src/
 
-RUN cargo build --release
+RUN cargo build --release --features otlp
 
 # Stage 3: Final runtime image
 FROM alpine:3.23 AS runtime
