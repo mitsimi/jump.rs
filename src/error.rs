@@ -26,6 +26,7 @@ pub enum AppError {
     DeviceNotFound(String),
 }
 
+#[allow(clippy::match_same_arms)]
 impl AppError {
     fn status_code(&self) -> StatusCode {
         match self {
