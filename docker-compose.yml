@@ -1,22 +1,9 @@
 services:
   app:
-    image: ghcr.io/mitsimi/jump_rs:latest
+    image: ghcr.io/mitsimi/jump_rs:2
+    restart: unless-stopped
     network_mode: host
     cap_add:
       - NET_RAW
     volumes:
       - ./devices.json:/app/devices.json
-      # Optional: mount a custom config file
-      # - ./config.toml:/app/config.toml
-    environment:
-      # Server configuration
-      - JUMPERS_SERVER_PORT=3000
-    # - JUMPERS_SERVER_LOG_LEVEL=info  # trace, debug, info, warn, error
-    # - JUMPERS_SERVER_LOG_FORMAT=compact  # compact, json, or pretty
-    # Storage configuration
-    # - JUMPERS_STORAGE_FILE_PATH=/app/devices.json
-    # Wake-on-LAN configuration
-    # - JUMPERS_WOL_DEFAULT_PORT=9
-    # Custom config file path (optional)
-    # - JUMPERS_CONFIG=/app/config.toml
-    restart: unless-stopped
