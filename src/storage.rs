@@ -262,7 +262,7 @@ mod tests {
         storage.add(device).unwrap();
 
         let _ = storage.remove("nonexistent-id");
-        assert!(storage.devices.len() == 1);
+        assert_eq!(storage.devices.len(), 1);
     }
 
     #[test]
