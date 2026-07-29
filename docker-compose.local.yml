@@ -1,6 +1,15 @@
 services:
   app:
     build: .
+    develop:
+      watch:
+        # rebuild app
+        - path: ./src
+          action: rebuild
+        # sync static content
+        - path: ./static
+          action: sync
+          target: /app/static/
     network_mode: host
     cap_add:
       - NET_RAW
