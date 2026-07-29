@@ -1178,26 +1178,64 @@ body::after {
     bottom: 40px;
     right: 40px;
     z-index: 1001;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
+    display: grid;
+    width: min(400px, calc(100vw - 80px));
+    pointer-events: none;
 }
 
 .toast__toast {
+    --toast-offset-y: 0px;
+    --toast-scale: 1;
+    --toast-layer: 3;
+
+    grid-area: 1 / 1;
+    z-index: var(--toast-layer);
     display: flex;
     align-items: center;
     gap: 12px;
-    max-width: 400px;
+    pointer-events: auto;
+    width: 100%;
+    min-width: 0;
     padding: 16px 24px;
-    transform: translateX(120%);
+    opacity: 0;
+    transform: translate3d(0, calc(100% + var(--toast-offset-y)), 0)
+        scale(var(--toast-scale));
+    transform-origin: bottom center;
     border: 1px solid var(--border-active);
     border-radius: 4px;
     background: var(--bg-secondary);
-    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+    transition:
+        transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.2s ease;
 }
 
 .toast__show {
-    transform: translateX(0);
+    opacity: 1;
+    transform: translate3d(0, var(--toast-offset-y), 0)
+        scale(var(--toast-scale));
+    animation: toastSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toast__toast:nth-last-child(2) {
+    --toast-offset-y: -12px;
+    --toast-scale: 0.96;
+    --toast-layer: 2;
+}
+
+.toast__toast:nth-last-child(3) {
+    --toast-offset-y: -24px;
+    --toast-scale: 0.92;
+    --toast-layer: 1;
+}
+
+.toast__toast:nth-last-child(n + 4) {
+    --toast-offset-y: -24px;
+    --toast-scale: 0.92;
+    --toast-layer: 0;
+
+    opacity: 0;
+    pointer-events: none;
 }
 
 .toast__success {
@@ -1226,6 +1264,19 @@ body::after {
 .toast__message {
     color: var(--text-primary);
     font-size: 0.75rem;
+}
+
+@keyframes toastSlideIn {
+    from {
+        opacity: 0;
+        transform: translate3d(0, calc(100% + var(--toast-offset-y)), 0)
+            scale(var(--toast-scale));
+    }
+    to {
+        opacity: 1;
+        transform: translate3d(0, var(--toast-offset-y), 0)
+            scale(var(--toast-scale));
+    }
 }
 
 @keyframes pulse {
@@ -1400,5 +1451,6 @@ body::after {
         right: 20px;
         bottom: 20px;
         left: 20px;
+        width: auto;
     }
 }
